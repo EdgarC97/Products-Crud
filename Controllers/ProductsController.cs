@@ -21,7 +21,7 @@ namespace ProductsCrud.Controllers
             return View(await _context.Products.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Products/Details
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,6 +53,9 @@ namespace ProductsCrud.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Redondear el precio a cero decimales antes de guardar
+                product.Price = Math.Round(product.Price, 0);
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -60,9 +63,9 @@ namespace ProductsCrud.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
-        [HttpGet("Edit/{id}")]
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Products/Update
+        [HttpGet("Update/{id}")]
+        public async Task<IActionResult> Update(int? id)
         {
             if (id == null)
             {
@@ -77,10 +80,10 @@ namespace ProductsCrud.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        [HttpPost("Edit/{id}")]
+        // POST: Products/Update
+        [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Quantity,ImageUrl")] Product product)
+        public async Task<IActionResult> Update(int id, [Bind("Id,Name,Description,Price,Quantity,ImageUrl")] Product product)
         {
             if (id != product.Id)
             {
@@ -91,6 +94,8 @@ namespace ProductsCrud.Controllers
             {
                 try
                 {
+                    // Redondear el precio a cero decimales antes de guardar
+                    product.Price = Math.Round(product.Price, 0);
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
