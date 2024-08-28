@@ -48,5 +48,26 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+    // Espera a que el DOM se haya cargado completamente
+    document.addEventListener("DOMContentLoaded", function () {
+        // Selecciona el formulario en la página
+        var form = document.querySelector("form");
+
+        // Añade un evento al formulario para manejar el envío
+        form.addEventListener("submit", function () {
+            // Selecciona el botón de envío dentro del formulario
+            var submitButton = form.querySelector("input[type='submit']");
+
+            // Desactiva el botón de envío para evitar múltiples clics
+            submitButton.disabled = true;
+
+            // Cambia el texto del botón para informar al usuario que la solicitud está en curso
+            submitButton.value = "Submitting...";
+        });
+    });
+</script>
 }
